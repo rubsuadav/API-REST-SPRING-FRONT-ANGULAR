@@ -1,0 +1,12 @@
+name,lastName,email,username,password,phone,expectedField,expectedMessage
+aa,User,testuser@gmail.com,testuser,password,1234567890,name,"Name must be between 3 and 50 characters"
+
+Test,Us,testuser@gmail.com,testuser,password,1234567890,lastName,"Last name must be between 3 and 50 characters"
+
+Test,User,,testuser,password,1234567890,email,"Email cannot be null"
+Test,User,invalidemail,testuser,password,1234567890,email,"Email must be from gmail, hotmail, yahoo or outlook"
+
+Test,User,testuser@gmail.com,te,password,1234567890,username,"Username must be between 3 and 50 characters"
+
+Test,User,testuser@gmail.com,testuser,pass,1234567890,password,"Password must be at least 8 characters"
+Test,User,testuser@gmail.com,testuser,pass,,phone,"Phone cannot be null"

@@ -1,0 +1,5 @@
+name,lastName,email,username,password,phone
+Test,User,testuser@gmail.com,testuser,password,1234567890
+Test,User,testuser@gmail.com,testuser2,password,1234567810
+Test,User,testuser2@gmail.com,testuser,password,1234567810
+Test,User,testuser11@gmail.com,testuser11,password,1234567890
