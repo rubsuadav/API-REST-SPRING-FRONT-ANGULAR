@@ -47,8 +47,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .permitAll())
 
                 // GUARDS
-                .addFilterBefore(anonymousFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(authenticatedFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(anonymousFilter, UsernamePasswordAuthenticationFilter.class);
+                // .addFilterBefore(authenticatedFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
