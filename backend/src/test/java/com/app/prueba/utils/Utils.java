@@ -1,5 +1,8 @@
 package com.app.prueba.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.app.prueba.models.Cards;
@@ -24,6 +27,13 @@ public class Utils {
         Cards card = new Cards();
         card.setName(name);
         card.setDescription(description);
+        return card;
+    }
+
+    public Map<String, Object> createCardMap(String name, String description) {
+        Map<String, Object> card = new HashMap<>();
+        card.put("name", name);
+        card.put("description", description);
         return card;
     }
 
