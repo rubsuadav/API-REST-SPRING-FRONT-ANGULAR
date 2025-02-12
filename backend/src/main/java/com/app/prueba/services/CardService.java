@@ -8,13 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.prueba.models.Cards;
+import com.app.prueba.models.UserCards;
 import com.app.prueba.repositories.CardRepository;
+import com.app.prueba.repositories.UserCardsRepository;
+import com.app.prueba.repositories.UserRepository;
 
 @Service
 public class CardService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private CardRepository cardRepository;
+
+    @Autowired
+    private UserCardsRepository userCardsRepository;
 
     public List<Cards> getAllCards() {
         return cardRepository.findAll();
@@ -53,4 +62,37 @@ public class CardService {
         cardRepository.deleteById(id);
     }
 
+    public Map<String, Object> exportCardToJSON(int id) {
+        Cards card = cardRepository.findById(id).get();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", card.getId());
+        response.put("name", card.getName());
+        response.put("description", card.getDescription());
+
+        return response;
+    }
+
+    public Map<String, Object> importCardFromJSON(Map<String, Object> cardMap, int userId) {
+        if (userRepository.existsById(userId)) {
+            UserCards userCards = new UserCards();
+            userCards.setUser(userRepository.findById(userId).get());
+
+            Cards card = new Cards();
+            card.setName((String) cardMap.get("name"));
+            card.setDescription((String) cardMap.get("description"));
+
+            cardRepository.save(card);
+
+            userCards.setCard(card);
+            userCardsRepository.save(userCards);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("card", card);
+            response.put("user", userCards.getUser().getUsername());
+
+            return response;
+        }
+        throw new IllegalArgumentException("User not found");
+    }
 }
