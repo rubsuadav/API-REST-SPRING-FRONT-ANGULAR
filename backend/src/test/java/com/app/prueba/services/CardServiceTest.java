@@ -90,4 +90,18 @@ public class CardServiceTest {
         assertEquals(0, cardService.getAllCards().size());
     }
 
+    @Test
+    @DisplayName("Test - Export card to JSON")
+    public void testExportCardToJSON() {
+        assertNotNull(cardService.exportCardToJSON(testCard.getId()));
+    }
+
+    @Test
+    @DisplayName("Test - Import card from JSON (INVALID USER ID)")
+    public void testImportCardFromJSONInvalidUserId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            cardService.importCardFromJSON(utils.createCardMap("Imported Card", "Imported Card Description"), 2);
+        });
+    }
+
 }
