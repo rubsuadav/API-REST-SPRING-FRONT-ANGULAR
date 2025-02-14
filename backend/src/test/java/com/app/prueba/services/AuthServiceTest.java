@@ -32,18 +32,18 @@ public class AuthServiceTest {
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll(); // Limpiar la base de datos antes de cada prueba
+        userRepository.deleteAll();
 
-        testUser = utils.createUser("Test", "User", "testuser@gmail.com", "testuser", "password",
-                "1234567890");
+        testUser = utils.createUser("Test", "User", "testuserauthservice@gmail.com", "testuserauthservice",
+                "password", utils.generateRandomPhoneNumber());
         userRepository.save(testUser);
     }
 
     @Test
     @DisplayName("Test de registro de usuario")
     public void testRegister() {
-        User newUser = utils.createUser("New", "User", "newuser@gmail.com", "newuser", "newpassword",
-                "0987654321");
+        User newUser = utils.createUser("New", "User", "newuserauth@gmail.com", "newuserauth",
+                "newpassword", utils.generateRandomPhoneNumber());
 
         Map<String, Object> response = authService.register(newUser);
 
@@ -67,7 +67,7 @@ public class AuthServiceTest {
     public void testLoginInvalidPassword() {
         User invalidUser = new User();
         invalidUser.setUsername("testuser");
-        invalidUser.setEmail("testuser@gmail.com");
+        invalidUser.setEmail("testuserauthservice@gmail.com");
         invalidUser.setPassword("wrongpassword");
 
         Map<String, Object> response = authService.login(invalidUser);

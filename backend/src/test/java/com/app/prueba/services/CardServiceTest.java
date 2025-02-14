@@ -43,7 +43,8 @@ public class CardServiceTest {
         userRepository.deleteAll();
         cardRepository.deleteAll();
 
-        testUser = utils.createUser("Test", "User", "testusernew@gmail.com", "testuser222", "password", "1234567120");
+        testUser = utils.createUser("Test", "User", "testusernewcs@gmail.com", "testusercs222",
+                "password", utils.generateRandomPhoneNumber());
         testCard = utils.createCard("Test Card", "Test Card Description");
 
         userRepository.save(testUser);

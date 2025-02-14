@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.prueba.models.Cards;
 import com.app.prueba.models.User;
@@ -19,6 +20,7 @@ import com.app.prueba.utils.Utils;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class UserServiceTest {
 
     @Autowired
@@ -41,8 +43,8 @@ public class UserServiceTest {
         cardRepository.deleteAll();
         userRepository.deleteAll();
 
-        testUser = utils.createUser("Test", "User", "testuser@gmail.com", "testuser", "password",
-                "1234567890");
+        testUser = utils.createUser("Test", "User", "testuserservice@gmail.com",
+                "testuserservice", "password", utils.generateRandomPhoneNumber());
         userRepository.save(testUser);
 
         testCard = utils.createCard("Test Card", "Test Card Description");
@@ -79,7 +81,8 @@ public class UserServiceTest {
     @Test
     @DisplayName("Test - Create user")
     public void testCreateUser() {
-        User newUser = utils.createUser("New", "User", "newtestuser@yahoo.com", "newuser", "password", "0987654321");
+        User newUser = utils.createUser("New", "User", "newtestuser@yahoo.com", "newuser", "password",
+                utils.generateRandomPhoneNumber());
 
         assertNotNull(userService.createUser(newUser));
         assertEquals(2, userService.getAllUsers().size());
@@ -93,7 +96,7 @@ public class UserServiceTest {
         testUser.setEmail("updated@gmail.com");
         testUser.setUsername("updateduser");
         testUser.setPassword("updatedpassword");
-        testUser.setPhone("0987654321");
+        testUser.setPhone(utils.generateRandomPhoneNumber());
 
         User updatedUser = userService.updateUser(testUser);
         assertNotNull(updatedUser);
@@ -128,5 +131,12 @@ public class UserServiceTest {
         User user = userService.findUserByEmailAndPassword(testUser.getEmail(), testUser.getPassword());
         assertNotNull(user);
         assertEquals(testUser.getEmail(), user.getEmail());
+    }
+
+    @Test
+    @DisplayName("Test - Add Card to User")
+    public void testAddCardToUser() {
+        userService.addCardToUser(testUser.getId(), testCard);
+        assertEquals(1, userService.findCardsByUserId(testUser.getId()).size());
     }
 }

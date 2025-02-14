@@ -2,6 +2,7 @@ package com.app.prueba.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,15 @@ public class Utils {
         card.put("name", name);
         card.put("description", description);
         return card;
+    }
+
+    public String generateRandomPhoneNumber() {
+        Random random = new Random();
+        StringBuilder phoneNumber = new StringBuilder("62");
+        for (int i = 0; i < 7; i++) {
+            phoneNumber.append(random.nextInt(10));
+        }
+        return phoneNumber.toString();
     }
 
 }
