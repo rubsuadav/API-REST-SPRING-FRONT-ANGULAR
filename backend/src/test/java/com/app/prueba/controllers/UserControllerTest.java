@@ -1,6 +1,7 @@
 package com.app.prueba.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -273,6 +274,19 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(card)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddCardsToInvalidUser() throws Exception { 
+        Cards card = new Cards();
+        card.setName("Test Card");
+
+        when(userService.addCardToUser(anyInt(), any(Cards.class))).thenThrow(new IllegalArgumentException());
+
+        mockMvc.perform(post("/api/users/-1/cards")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(card)))
+                .andExpect(status().isNotFound());
     }
 
 }
