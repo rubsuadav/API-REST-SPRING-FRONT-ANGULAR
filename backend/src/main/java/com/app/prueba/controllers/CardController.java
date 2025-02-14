@@ -155,7 +155,7 @@ public class CardController {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File directory = new File("backend/examples");
+            File directory = new File("examples");
             if (!directory.exists()) {
                 directory.mkdir();
             }
