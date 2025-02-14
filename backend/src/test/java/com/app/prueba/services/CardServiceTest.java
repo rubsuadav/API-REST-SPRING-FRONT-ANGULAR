@@ -2,19 +2,25 @@ package com.app.prueba.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.prueba.models.Cards;
+import com.app.prueba.models.User;
 import com.app.prueba.repositories.CardRepository;
+import com.app.prueba.repositories.UserRepository;
 import com.app.prueba.utils.Utils;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class CardServiceTest {
 
     @Autowired
@@ -23,16 +29,24 @@ public class CardServiceTest {
     @Autowired
     private CardRepository cardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private Cards testCard;
+    private User testUser;
 
     @Autowired
     private Utils utils;
 
     @BeforeEach
     public void setUp() {
+        userRepository.deleteAll();
         cardRepository.deleteAll();
 
+        testUser = utils.createUser("Test", "User", "testusernew@gmail.com", "testuser222", "password", "1234567120");
         testCard = utils.createCard("Test Card", "Test Card Description");
+
+        userRepository.save(testUser);
         cardRepository.save(testCard);
     }
 
@@ -92,7 +106,7 @@ public class CardServiceTest {
 
     @Test
     @DisplayName("Test - Export card to JSON")
-    public void testExportCardToJSON() {
+    public void testExportCardToJSON() throws IOException {
         assertNotNull(cardService.exportCardToJSON(testCard.getId()));
     }
 
@@ -102,6 +116,14 @@ public class CardServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             cardService.importCardFromJSON(utils.createCardMap("Imported Card", "Imported Card Description"), 2);
         });
+    }
+
+    @Test
+    @DisplayName("Test - Import card from JSON")
+    public void testImportCardFromJSON() {
+        assertNotNull(
+                cardService.importCardFromJSON(utils.createCardMap("Imported Card", "Imported Card Description"),
+                        testUser.getId()));
     }
 
 }

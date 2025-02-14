@@ -148,14 +148,14 @@ public class CardController {
                     @Content(mediaType = "application/json") })
     })
     @PostMapping("/export/{id}")
-    public ResponseEntity<?> exportCard(@PathVariable int id) {
+    public ResponseEntity<?> exportCard(@PathVariable int id) throws IOException {
         Cards card = cardService.getCardById(id);
         if (card == null) {
             return createErrorResponse("Card not found", HttpStatus.NOT_FOUND);
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File directory = new File("backend/src/main/java/com/app/prueba/examples/");
+            File directory = new File("backend/examples");
             if (!directory.exists()) {
                 directory.mkdir();
             }
@@ -167,7 +167,7 @@ public class CardController {
         }
         Map<String, Object> response = new HashMap<>();
         response.put("data", cardService.exportCardToJSON(id));
-        response.put("message", "Card exported to " + id + "card" + card.getName() + ".json");
+        response.put("message", "Card exported to " + id + "-card-" + card.getName() + ".json");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

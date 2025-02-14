@@ -1,5 +1,6 @@
 package com.app.prueba.services;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class CardService {
         cardRepository.deleteById(id);
     }
 
-    public Map<String, Object> exportCardToJSON(int id) {
+    public Map<String, Object> exportCardToJSON(int id) throws IOException {
         Cards card = cardRepository.findById(id).get();
 
         Map<String, Object> response = new HashMap<>();
