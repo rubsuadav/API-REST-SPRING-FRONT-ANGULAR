@@ -23,7 +23,7 @@ public class Cards {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @NotBlank(message = "Name is required")
     @NotNull(message = "Name is required")
     @Length(min = 3, message = "Name must be at least 3 characters")
